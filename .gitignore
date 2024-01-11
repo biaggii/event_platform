@@ -1,6 +1,6 @@
 .vscode
 .idea
-
+mongo/
 # dependencies
 /node_modules
 /.pnp
