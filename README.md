@@ -3,7 +3,7 @@
 ```bash
 pnpm add uploadthing @uploadthing/react
 pnpm add @clerk/nextjs
-pnpm dlx shadcn-ui@latest add separator button sheet
+pnpm dlx shadcn-ui@latest add separator button sheet form input
 pnpm add mongoose mongodb svix query-string
 ```
 
