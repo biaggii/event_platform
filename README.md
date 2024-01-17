@@ -3,8 +3,10 @@
 ```bash
 pnpm add uploadthing @uploadthing/react
 pnpm add @clerk/nextjs
-pnpm dlx shadcn-ui@latest add separator button sheet form input select alert-dialog
+pnpm dlx shadcn-ui@latest add separator button sheet form input select alert-dialog textarea checkbox
 pnpm add mongoose mongodb svix query-string
+pnpm add react-datepicker 
+pnpm add -D @types/react-datepicker 
 ```
 
 ## Enable clerk webhook
