@@ -54,11 +54,10 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
       </SelectTrigger>
       <SelectContent>
         { categories.length > 0 && categories.map((category) => (
-            <SelectItem key={ category.id } value={ category.id }>
-              { category.name }
-            </SelectItem>
-          )
-        ) }
+          <SelectItem key={ category._id } value={ category._id }>
+            { category.name }
+          </SelectItem>
+        )) }
         <AlertDialog>
           <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-primary-500 hover:bg-primary-50 focus:text-primary-500">Add new
             category</AlertDialogTrigger>

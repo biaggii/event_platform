@@ -23,6 +23,7 @@ export function FileUploader({ imageUrl, onFieldChange, setFiles }: Readonly<Fil
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: 'image/*' ? generateClientDropzoneAccept(['image/*']) : undefined,
+    maxSize: 20 * 20 * 1024 * 1024,
   })
 
   return (

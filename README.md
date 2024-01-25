@@ -23,3 +23,14 @@ git branch -M main
 git remote add origin git@github.com:biaggii/event_platform.git
 git push -u origin main
 ```
+## edit config
+```javascript
+// next.config.js
+const nextConfig = {
+  images:{
+    domains: ['utfs.io'],
+  },
+}
+
+
+```
