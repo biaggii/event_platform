@@ -7,6 +7,8 @@ pnpm dlx shadcn-ui@latest add separator button sheet form input select alert-dia
 pnpm add mongoose mongodb svix query-string
 pnpm add react-datepicker 
 pnpm add -D @types/react-datepicker 
+pnpm install --save stripe @stripe/stripe-js next
+pnpm add stripe
 ```
 
 ## Enable clerk webhook
