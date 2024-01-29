@@ -1,11 +1,37 @@
 import stripe from 'stripe';
-import {NextRequest, NextResponse } from 'next/server';
-import {createOrder} from '@/lib/actions/order.actions';
+import { NextResponse } from 'next/server';
+import { createOrder } from '@/lib/actions/order.actions';
 
-export async function POST(request:Request){
+export async function POST(request: Request) {
   const body = await request.json();
 
-  const sig = request.headers.get('stripe-signature')!;
+  const sig = request.headers.get('stripe-signature') as string;
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+  } catch (e) {
+    return NextResponse.json({ message: 'Stripe Webhook error', error: e }, { status: 400 });
+  }
+  // Get the type of webhook event sent - used to check the status of PaymentIntents.
+  const eventType = event.type;
+
+  // Create
+  if (eventType === 'checkout.session.completed') {
+    const { id, amount_total, metadata } = event.data.object;
+
+    const order = {
+      stripeId: id,
+      eventId: metadata?.eventId || '',
+      buyerId: metadata?.buyerId || '',
+      totalAmount: amount_total ? (amount_total / 100).toString() : '0',
+      createdAt: new Date(),
+    }
+
+    const newOrder = await createOrder(order);
+    return NextResponse.json({ message: 'OK', order: newOrder });
+  }
+  return new Response('', { status: 200 });
 }
 
 // app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
