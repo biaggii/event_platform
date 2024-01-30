@@ -3,12 +3,23 @@ import Link from "next/link";
 import Collection from "@/components/shared/Collection";
 import { auth } from "@clerk/nextjs";
 import { getEventsByUser } from "@/lib/actions/event.actions";
+import { getOrdersByUser } from "@/lib/actions/order.actions";
+import { IOrder } from "@/lib/database/models/order.model";
+import { SearchParamProps } from "@/types";
 
-const Profile = async () => {
-    const { sessionClaims } = auth();
+const ProfilePage = async ({ searchParams }: SearchParamProps) => {
+  const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
 
-  const organizedEvents = await getEventsByUser({ userId, page: 1 })
+  const ordersPage = Number(searchParams?.ordersPages) || 1;
+  const eventPage = Number(searchParams?.ordersPages) || 1;
+
+  const orders = await getOrdersByUser({ userId, page: ordersPage })
+
+  const orderedEvents = orders?.data.map((order: IOrder) => order.event) || [];
+
+  const organizedEvents = await getEventsByUser({ userId, page: eventPage })
+
   return (
     <>
       {/* My tickers*/ }
@@ -24,14 +35,14 @@ const Profile = async () => {
       </section>
       <section className='wrapper my-8 '>
         <Collection
-          data={ organizedEvents?.data }
+          data={ orderedEvents }
           emptyTitle="No Events tickets purchased yet"
           emptyStateSubtext="No worries - plenty of exciting events to explore!"
           collectionType="My_Tickets"
-          limit={ 3 }
-          page={ 1 }
+          limit={ 4 }
+          page={ ordersPage }
           urlParamName='ordersPages'
-          totalPages={ 2 }
+          totalPages={ orders?.totalPages }
         />
       </section>
       {/* My events */ }
@@ -52,14 +63,14 @@ const Profile = async () => {
           emptyTitle="No events have been created yet"
           emptyStateSubtext="Go create some noew"
           collectionType="Events_Organized"
-          limit={ 3 }
-          page={ 1 }
+          limit={ 4 }
+          page={ eventPage }
           urlParamName='eventsPages'
-          totalPages={ 2 }
+          totalPages={ organizedEvents?.totalPages }
         />
       </section>
     </>
   );
 }
 
-export default Profile;
+export default ProfilePage;
